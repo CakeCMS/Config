@@ -52,11 +52,10 @@ class ConfigsTable extends Table
             ->requirePresence('key', true, __d('config', 'The key field id required'))
             ->notEmpty('key', __d('config', 'Please, enter you config key'))
             ->add('key', 'unique', [
-                    'provider' => 'table',
-                    'rule'     => 'validateUnique',
-                    'message'  => __d('config', 'The parameter with this key already exists'),
-                ]
-            );
+                'provider' => 'table',
+                'rule'     => 'validateUnique',
+                'message'  => __d('config', 'The parameter with this key already exists'),
+            ]);
 
         return $validator;
     }
