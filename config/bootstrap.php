@@ -13,4 +13,6 @@
  * @author    Sergey Kalistratov <kalistratov.s.m@gmail.com>
  */
 
-define('CMS_TABLE_CONFIGS', 'configs');
+if (!defined('CMS_TABLE_CONFIGS')) {
+    define('CMS_TABLE_CONFIGS', 'configs');
+}
