@@ -15,7 +15,6 @@
 
 namespace Config\Test\TestCase\Model\Table;
 
-use Core\Plugin;
 use Cake\ORM\TableRegistry;
 use Config\Model\Entity\Config;
 use Config\Model\Table\ConfigsTable;
@@ -29,42 +28,10 @@ use Core\TestSuite\IntegrationTestCase;
 class ConfigsTableModelTest extends IntegrationTestCase
 {
 
-    /**
-     * Test fixtures.
-     *
-     * @var array
-     */
     public $fixtures = ['plugin.config.configs'];
 
-    /**
-     * Setup the test case, backup the static object values so they can be restored.
-     * Specifically backs up the contents of Configure and paths in App if they have
-     * not already been backed up.
-     *
-     * @return void
-     */
-    public function setUp()
-    {
-        parent::setUp();
-        Plugin::load('Config', [
-            'path'      => ROOT . DS,
-            'bootstrap' => true,
-            'routes'    => true,
-        ]);
-
-        Plugin::routes('Config');
-    }
-
-    /**
-     * Clears the state used for requests.
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        Plugin::unload('Config');
-    }
+    protected $_plugin = 'Core';
+    protected $_corePlugin = 'Config';
 
     public function testClassName()
     {

@@ -15,7 +15,6 @@
 
 namespace Config\Test\TestCase;
 
-use Core\Plugin;
 use Config\Config;
 use Core\TestSuite\IntegrationTestCase;
 
@@ -27,45 +26,10 @@ use Core\TestSuite\IntegrationTestCase;
 class ConfigTest extends IntegrationTestCase
 {
 
-    /**
-     * Test fixtures.
-     *
-     * @var array
-     */
     public $fixtures = ['plugin.config.configs'];
 
-    /**
-     * Default plugin name.
-     *
-     * @var string
-     */
-    protected $_plugin = 'Config';
-
-    /**
-     * Setup the test case, backup the static object values so they can be restored.
-     * Specifically backs up the contents of Configure and paths in App if they have
-     * not already been backed up.
-     *
-     * @return void
-     */
-    public function setUp()
-    {
-        parent::setUp();
-        $options = [
-            'path'      => ROOT . DS,
-            'bootstrap' => true,
-            'routes'    => true,
-        ];
-
-        Plugin::load($this->_plugin, $options);
-        Plugin::routes($this->_plugin);
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        Plugin::unload($this->_plugin);
-    }
+    protected $_plugin = 'Core';
+    protected $_corePlugin = 'Config';
 
     public function testGetInstance()
     {

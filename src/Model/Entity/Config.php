@@ -15,9 +15,9 @@
 
 namespace Config\Model\Entity;
 
-use Core\ORM\Entity;
 use JBZoo\Data\Data;
 use JBZoo\Data\JSON;
+use Core\ORM\Entity\Entity;
 
 /**
  * Class Config
