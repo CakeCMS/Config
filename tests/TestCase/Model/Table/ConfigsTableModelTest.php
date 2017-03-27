@@ -36,8 +36,8 @@ class ConfigsTableModelTest extends IntegrationTestCase
     public function testClassName()
     {
         $table = TableRegistry::get('Config.Configs');
-        $this->assertInstanceOf('Config\Model\Table\ConfigsTable', $table);
-        $this->assertSame(CMS_TABLE_CONFIGS, $table->table());
+        self::assertInstanceOf('Config\Model\Table\ConfigsTable', $table);
+        self::assertSame(CMS_TABLE_CONFIGS, $table->table());
     }
     
     public function testSave()
@@ -56,11 +56,11 @@ class ConfigsTableModelTest extends IntegrationTestCase
 
         /** @var \Config\Model\Entity\Config $result */
         $result = $table->findByKey('from.test')->first();
-        $this->assertInstanceOf('Config\Model\Entity\Config', $result);
-        $this->assertSame('from.test', $result->key);
+        self::assertInstanceOf('Config\Model\Entity\Config', $result);
+        self::assertSame('from.test', $result->key);
 
-        $this->assertInstanceOf('JBZoo\Data\JSON', $result->value);
-        $this->assertSame('Simple entity', $result->value->get('name'));
+        self::assertInstanceOf('JBZoo\Data\JSON', $result->value);
+        self::assertSame('Simple entity', $result->value->get('name'));
 
         $entity = new Config([
             'key'   => 'array.value',
@@ -80,13 +80,13 @@ class ConfigsTableModelTest extends IntegrationTestCase
         $table->save($entity);
         /** @var \Config\Model\Entity\Config $result */
         $result = $table->findByKey('array.value')->first();
-        $this->assertInstanceOf('Config\Model\Entity\Config', $result);
-        $this->assertSame('array.value', $result->key);
-        $this->assertInstanceOf('JBZoo\Data\JSON', $result->value);
-        $this->assertTrue(is_array($result->value->get('array-1')));
-        $this->assertTrue(is_array($result->value->get('array-2')));
-        $this->assertTrue(is_array($result->value->get('array-3')));
-        $this->assertSame('Array 1', $result->value->find('array-1.name'));
+        self::assertInstanceOf('Config\Model\Entity\Config', $result);
+        self::assertSame('array.value', $result->key);
+        self::assertInstanceOf('JBZoo\Data\JSON', $result->value);
+        self::assertTrue(is_array($result->value->get('array-1')));
+        self::assertTrue(is_array($result->value->get('array-2')));
+        self::assertTrue(is_array($result->value->get('array-3')));
+        self::assertSame('Array 1', $result->value->find('array-1.name'));
     }
 
     public function testSaveDuplicate()
@@ -102,8 +102,8 @@ class ConfigsTableModelTest extends IntegrationTestCase
         ]);
         /** @var \Config\Model\Entity\Config $result */
         $result = $table->save($entity);
-        $this->assertFalse((bool) $result);
-        $this->assertSame([
+        self::assertFalse((bool) $result);
+        self::assertSame([
             'unique' => __d('config', 'The parameter with this key already exists')
         ], $entity->errors('key'));
 
@@ -114,7 +114,7 @@ class ConfigsTableModelTest extends IntegrationTestCase
             ]
         ]);
 
-        $this->assertSame([
+        self::assertSame([
             '_required' => __d('config', 'The key field id required')
         ], $entity->errors('key'));
 
@@ -126,7 +126,7 @@ class ConfigsTableModelTest extends IntegrationTestCase
             ]
         ]);
 
-        $this->assertSame([
+        self::assertSame([
             '_empty' => __d('config', 'Please, enter you config key')
         ], $entity->errors('key'));
     }

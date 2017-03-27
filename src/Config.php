@@ -49,9 +49,9 @@ class Config
      */
     public static function getInstance()
     {
-        if (empty(self::$_instance)) {
+        if (self::$_instance === null) {
             self::$_instance = new Config();
-            if (self::$_instance->_store == null) {
+            if (self::$_instance->_store === null) {
                 self::$_instance->_store = self::$_instance->_setStore();
             }
         }

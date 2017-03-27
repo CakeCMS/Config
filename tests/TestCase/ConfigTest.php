@@ -34,7 +34,7 @@ class ConfigTest extends IntegrationTestCase
     public function testGetInstance()
     {
         $config = Config::getInstance();
-        $this->assertInstanceOf('Config\Config', $config);
+        self::assertInstanceOf('Config\Config', $config);
     }
 
     public function testGet()
@@ -42,8 +42,8 @@ class ConfigTest extends IntegrationTestCase
         $config = Config::getInstance();
         $result = $config->find('test.custom');
 
-        $this->assertInstanceOf('JBZoo\Data\JSON', $result);
-        $this->assertSame(['id' => '_test', 'name' => 'Test', 'options' => true], $result->get('test'));
-        $this->assertSame('_test', $result->find('test.id'));
+        self::assertInstanceOf('JBZoo\Data\JSON', $result);
+        self::assertSame(['id' => '_test', 'name' => 'Test', 'options' => true], $result->get('test'));
+        self::assertSame('_test', $result->find('test.id'));
     }
 }

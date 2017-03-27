@@ -14,8 +14,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5.10",
-        "cake-cms/core": "~1.0"
+        "cake-cms/core": "^1.0"
     },
     "require-dev": {
         "jbzoo/phpunit": "^1.10",

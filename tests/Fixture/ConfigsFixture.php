@@ -46,17 +46,17 @@ class ConfigsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
-                'key' => 'test.custom',
+                'id'    => 1,
+                'key'   => 'test.custom',
                 'value' => json_encode([
-                    'test' => [
-                        'id' => '_test',
-                        'name' => 'Test',
+                    'test'   => [
+                        'id'      => '_test',
+                        'name'    => 'Test',
                         'options' => true,
                     ],
                     'custom' => [
-                        'id' => '_custom',
-                        'name' => 'Custom',
+                        'id'      => '_custom',
+                        'name'    => 'Custom',
                         'options' => false,
                     ]
                 ], JSON_PRETTY_PRINT)
