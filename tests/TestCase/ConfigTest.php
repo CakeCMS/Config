@@ -28,14 +28,8 @@ class ConfigTest extends IntegrationTestCase
 
     public $fixtures = ['plugin.config.configs'];
 
-    protected $_plugin = 'Core';
     protected $_corePlugin = 'Config';
-
-    public function testGetInstance()
-    {
-        $config = Config::getInstance();
-        self::assertInstanceOf('Config\Config', $config);
-    }
+    protected $_plugin = 'Core';
 
     public function testGet()
     {
@@ -45,5 +39,45 @@ class ConfigTest extends IntegrationTestCase
         self::assertInstanceOf('JBZoo\Data\JSON', $result);
         self::assertSame(['id' => '_test', 'name' => 'Test', 'options' => true], $result->get('test'));
         self::assertSame('_test', $result->find('test.id'));
+    }
+
+    public function testGetInstance()
+    {
+        $config = Config::getInstance();
+        self::assertInstanceOf('Config\Config', $config);
+    }
+
+    public function testSaveFail()
+    {
+        $config = Config::getInstance();
+        $result = $config->save('', []);
+        self::assertFalse($result);
+    }
+
+    public function testSaveSuccess()
+    {
+        $config = Config::getInstance();
+        $result = $config->save('test.app', [
+            'user'  => 'test',
+            'color' => '#000'
+        ]);
+
+        self::assertInstanceOf('Config\Model\Entity\Config', $result);
+        self::assertSame('test.app', $result->name);
+        self::assertInstanceOf('JBZoo\Data\JSON', $result->params);
+        self::assertSame('#000', $result->params->get('color'));
+    }
+
+    public function testUpDate()
+    {
+        $config = Config::getInstance();
+        $key = 'test.custom';
+        $configs = $config->find($key);
+
+        self::assertInstanceOf('JBZoo\Data\JSON', $configs);
+        self::assertSame('Test', $configs->find('test.name'));
+
+        $result = $config->save($key, []);
+        self::assertNull($result->params->find('test.name'));
     }
 }

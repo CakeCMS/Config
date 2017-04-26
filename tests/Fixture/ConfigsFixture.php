@@ -31,11 +31,22 @@ class ConfigsFixture extends TestFixture
      * @var array
      */
     public $fields = [
-        'id' => ['type' => 'integer', 'length' => 12, 'null' => false],
-        'key' => ['type' => 'string', 'length' => 255, 'null' => false],
-        'value' => 'text',
+        'id'  => [
+            'type'   => 'integer',
+            'length' => 12,
+            'null'   => false
+        ],
+        'name' => [
+            'type'   => 'string',
+            'length' => 255,
+            'null'   => false
+        ],
+        'params' => 'text',
         '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id']]
+            'primary' => [
+                'type'    => 'primary',
+                'columns' => ['id']
+            ]
         ]
     ];
 
@@ -46,18 +57,18 @@ class ConfigsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id'    => 1,
-                'key'   => 'test.custom',
-                'value' => json_encode([
+                'id'     => 1,
+                'name'   => 'test.custom',
+                'params' => json_encode([
                     'test'   => [
                         'id'      => '_test',
                         'name'    => 'Test',
-                        'options' => true,
+                        'options' => true
                     ],
                     'custom' => [
                         'id'      => '_custom',
                         'name'    => 'Custom',
-                        'options' => false,
+                        'options' => false
                     ]
                 ], JSON_PRETTY_PRINT)
             ]

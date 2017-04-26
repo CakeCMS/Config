@@ -28,25 +28,24 @@ use Core\TestSuite\IntegrationTestCase;
 class ConfigsTableModelTest extends IntegrationTestCase
 {
 
-    public $fixtures = ['plugin.config.configs'];
-
-    protected $_plugin = 'Core';
+    public $fixtures       = ['plugin.config.configs'];
     protected $_corePlugin = 'Config';
+    protected $_plugin     = 'Core';
 
     public function testClassName()
     {
         $table = TableRegistry::get('Config.Configs');
         self::assertInstanceOf('Config\Model\Table\ConfigsTable', $table);
-        self::assertSame(CMS_TABLE_CONFIGS, $table->table());
+        self::assertSame(CMS_TABLE_CONFIGS, $table->getTable());
     }
     
     public function testSave()
     {
         $entity = new Config([
-            'key'   => 'from.test',
-            'value' => [
-                'name' => 'Simple entity',
-                'order' => 'DESC',
+            'name'   => 'from.test',
+            'params' => [
+                'name'  => 'Simple entity',
+                'order' => 'DESC'
             ]
         ]);
 
@@ -55,38 +54,38 @@ class ConfigsTableModelTest extends IntegrationTestCase
         $table->save($entity);
 
         /** @var \Config\Model\Entity\Config $result */
-        $result = $table->findByKey('from.test')->first();
+        $result = $table->findByName('from.test')->first();
         self::assertInstanceOf('Config\Model\Entity\Config', $result);
-        self::assertSame('from.test', $result->key);
+        self::assertSame('from.test', $result->name);
 
-        self::assertInstanceOf('JBZoo\Data\JSON', $result->value);
-        self::assertSame('Simple entity', $result->value->get('name'));
+        self::assertInstanceOf('JBZoo\Data\JSON', $result->params);
+        self::assertSame('Simple entity', $result->params->get('name'));
 
         $entity = new Config([
-            'key'   => 'array.value',
-            'value' => [
+            'name'   => 'array.value',
+            'params' => [
                 'array-1' => [
-                    'name' => 'Array 1',
+                    'name' => 'Array 1'
                 ],
                 'array-2' => [
-                    'name' => 'Array 2',
+                    'name' => 'Array 2'
                 ],
                 'array-3' => [
-                    'name' => 'Array 3',
-                ],
+                    'name' => 'Array 3'
+                ]
             ]
         ]);
 
         $table->save($entity);
         /** @var \Config\Model\Entity\Config $result */
-        $result = $table->findByKey('array.value')->first();
+        $result = $table->findByName('array.value')->first();
         self::assertInstanceOf('Config\Model\Entity\Config', $result);
-        self::assertSame('array.value', $result->key);
-        self::assertInstanceOf('JBZoo\Data\JSON', $result->value);
-        self::assertTrue(is_array($result->value->get('array-1')));
-        self::assertTrue(is_array($result->value->get('array-2')));
-        self::assertTrue(is_array($result->value->get('array-3')));
-        self::assertSame('Array 1', $result->value->find('array-1.name'));
+        self::assertSame('array.value', $result->name);
+        self::assertInstanceOf('JBZoo\Data\JSON', $result->params);
+        self::assertTrue(is_array($result->params->get('array-1')));
+        self::assertTrue(is_array($result->params->get('array-2')));
+        self::assertTrue(is_array($result->params->get('array-3')));
+        self::assertSame('Array 1', $result->params->find('array-1.name'));
     }
 
     public function testSaveDuplicate()
@@ -94,10 +93,10 @@ class ConfigsTableModelTest extends IntegrationTestCase
         /** @var ConfigsTable $table */
         $table  = TableRegistry::get('Config.Configs');
         $entity = $table->newEntity([
-            'key'   => 'test.custom',
-            'value' => [
+            'name'   => 'test.custom',
+            'params' => [
                 'name' => 'Simple entity',
-                'order' => 'DESC',
+                'order' => 'DESC'
             ]
         ]);
         /** @var \Config\Model\Entity\Config $result */
@@ -105,29 +104,29 @@ class ConfigsTableModelTest extends IntegrationTestCase
         self::assertFalse((bool) $result);
         self::assertSame([
             'unique' => __d('config', 'The parameter with this key already exists')
-        ], $entity->errors('key'));
+        ], $entity->errors('name'));
 
         $entity = $table->newEntity([
-            'value' => [
-                'name' => 'Simple entity',
-                'order' => 'DESC',
+            'params' => [
+                'name'  => 'Simple entity',
+                'order' => 'DESC'
             ]
         ]);
 
         self::assertSame([
             '_required' => __d('config', 'The key field id required')
-        ], $entity->errors('key'));
+        ], $entity->errors('name'));
 
         $entity = $table->newEntity([
-            'key' => '',
-            'value' => [
-                'name' => 'Simple entity',
-                'order' => 'DESC',
+            'name'   => '',
+            'params' => [
+                'name'  => 'Simple entity',
+                'order' => 'DESC'
             ]
         ]);
 
         self::assertSame([
             '_empty' => __d('config', 'Please, enter you config key')
-        ], $entity->errors('key'));
+        ], $entity->errors('name'));
     }
 }

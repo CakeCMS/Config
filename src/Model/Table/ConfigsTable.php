@@ -22,7 +22,7 @@ use Cake\Validation\Validator;
  * Class ConfigsTable
  *
  * @package Config\Model\Table
- * @method \Cake\ORM\Query findByKey($key)
+ * @method \Cake\ORM\Query findByName($name)
  */
 class ConfigsTable extends Table
 {
@@ -36,8 +36,9 @@ class ConfigsTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->table(CMS_TABLE_CONFIGS);
-        $this->primaryKey();
+        $this
+            ->setPrimaryKey('id')
+            ->setTable(CMS_TABLE_CONFIGS);
     }
 
     /**
@@ -49,12 +50,12 @@ class ConfigsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->requirePresence('key', true, __d('config', 'The key field id required'))
-            ->notEmpty('key', __d('config', 'Please, enter you config key'))
-            ->add('key', 'unique', [
+            ->requirePresence('name', true, __d('config', 'The key field id required'))
+            ->notEmpty('name', __d('config', 'Please, enter you config key'))
+            ->add('name', 'unique', [
                 'provider' => 'table',
                 'rule'     => 'validateUnique',
-                'message'  => __d('config', 'The parameter with this key already exists'),
+                'message'  => __d('config', 'The parameter with this key already exists')
             ]);
 
         return $validator;

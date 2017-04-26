@@ -29,6 +29,13 @@ class Config
 {
 
     /**
+     * Hold config instance.
+     *
+     * @var Config
+     */
+    protected static $_instance;
+
+    /**
      * Config store.
      *
      * @var Data
@@ -36,11 +43,17 @@ class Config
     protected $_store;
 
     /**
-     * Hold config instance.
+     * Find config param.
      *
-     * @var Config
+     * @param string $key
+     * @param null|string|array $default
+     * @param mixed $filter
+     * @return mixed|Data
      */
-    protected static $_instance;
+    public function find($key, $default = null, $filter = null)
+    {
+        return $this->_store->get($key, $default, $filter);
+    }
 
     /**
      * Get config instance.
@@ -60,16 +73,39 @@ class Config
     }
 
     /**
-     * Find config param.
+     * Update or save config data by config name.
      *
-     * @param string $key
-     * @param null|string|array $default
-     * @param mixed $filter
-     * @return mixed|Data
+     * @param string $name
+     * @param array $data
+     * @return bool|\Cake\Datasource\EntityInterface|\Config\Model\Entity\Config
      */
-    public function find($key, $default = null, $filter = null)
+    public function save($name, array $data = [])
     {
-        return $this->_store->get($key, $default, $filter);
+        $table  = $this->_getTable();
+        $entity = $table->findByName($name)->first();
+
+        $newData = [
+            'name'   => $name,
+            'params' => $data
+        ];
+
+        if ($entity !== null && $entity->get('name') === $name) {
+            $entity = $table->patchEntity($entity, $newData);
+        } else {
+            $entity = $table->newEntity($newData);
+        }
+
+        return $table->save($entity);
+    }
+
+    /**
+     * Get config table.
+     *
+     * @return ConfigsTable
+     */
+    protected function _getTable()
+    {
+        return TableRegistry::get('Config.Configs');
     }
 
     /**
@@ -79,14 +115,11 @@ class Config
      */
     protected function _setStore()
     {
-        /** @var ConfigsTable $table */
-        $table = TableRegistry::get('Config.Configs');
-        $rows = $table->find();
-
-        $tmp = [];
+        $tmp  = [];
+        $rows = $this->_getTable()->find();
         /** @var \Config\Model\Entity\Config $row */
         foreach ($rows as $row) {
-            $tmp[$row->key] = $row->get('value');
+            $tmp[$row->name] = $row->get('params');
         }
 
         return new JSON($tmp);

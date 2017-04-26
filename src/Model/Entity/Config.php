@@ -16,7 +16,6 @@
 namespace Config\Model\Entity;
 
 use JBZoo\Data\Data;
-use JBZoo\Data\JSON;
 use Core\ORM\Entity\Entity;
 
 /**
@@ -24,19 +23,8 @@ use Core\ORM\Entity\Entity;
  *
  * @package Config\Model\Entity
  * @property Data $value
- * @property string $key
+ * @property string $name
  */
 class Config extends Entity
 {
-
-    /**
-     * Get current value.
-     *
-     * @param string $value
-     * @return JSON
-     */
-    protected function _getValue($value)
-    {
-        return new JSON($value);
-    }
 }
